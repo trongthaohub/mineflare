@@ -1,0 +1,36 @@
+{
+  "name": "mineflare",
+  "version": "0.0.0",
+  "description": "Alchemy Typescript Project",
+  "type": "module",
+  "scripts": {
+    "build": "./container_src/build-container-services.sh && bun build:worker",
+    "build:worker": "tsc -b",
+    "configure": "alchemy configure",
+    "version": "alchemy --version",
+    "login": "alchemy login",
+    "predeploy": "mkdir -p dist/client && find dist/client -mindepth 1 ! -name '*.png' -delete",
+    "deploy": "touch .env && alchemy deploy --env-file .env",
+    "destroy": "touch .env && alchemy destroy --env-file .env",
+    "dev": "touch .env && ./container_src/build-container-services.sh && alchemy dev --env-file .env",
+    "dev:spa": "vite"
+  },
+  "devDependencies": {
+    "@cloudflare/containers": "^0.0.28",
+    "@cloudflare/workers-types": "4.20250926.0",
+    "@types/node": "^24.5.2",
+    "@types/bun": "^1.2.2",
+    "alchemy": "https://pkg.pr.new/alchemy-run/alchemy@1061",
+    "typescript": "^5.9.2",
+    "vite": "^5.4.0"
+  },
+  "dependencies": {
+    "@elysiajs/cors": "^1.4.0",
+    "@elysiajs/eden": "^1.0.0",
+    "@libsql/client": "^0.15.15",
+    "@preact/signals": "^2.3.1",
+    "drizzle-orm": "^0.44.5",
+    "elysia": "^1.4.9",
+    "preact": "^10.19.0"
+  }
+}

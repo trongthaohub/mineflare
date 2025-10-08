@@ -1,0 +1,100 @@
+storage:
+  type: aws_s3
+  override_endpoint: {{AWS_ENDPOINT_URL}}
+  bucketname: {{DYNMAP_BUCKET}}
+  region: auto
+  access-key-id: {{AWS_ACCESS_KEY_ID}}
+  secret-access-key: {{AWS_SECRET_ACCESS_KEY}}
+
+# External webserver mode - disable internal server, use S3 for everything
+disable-webserver: true
+
+# Reduce tile count with larger tile scale (2x scale = 1/4 the tiles)
+defaulttilescale: 2
+
+# Use efficient image format to reduce storage costs
+image-format: jpg-q90
+
+# Low-res template for performance
+deftemplatesuffix: vlowres
+
+components:
+  - class: org.dynmap.ClientConfigurationComponent
+  - class: org.dynmap.JsonFileClientUpdateComponent
+    type: static
+    writeinterval: 15
+    allowwebchat: false
+  - class: org.dynmap.MarkersComponent
+    type: markers
+    showlabel: true
+    enablesigns: false
+    showspawn: false
+    spawnicon: world
+    spawnlabel: "Spawn"
+    showofflineplayers: false
+    offlinelabel: "Offline"
+    offlineicon: offlineuser
+    offlinehidebydefault: true
+    offlineminzoom: 0
+    maxofflinetime: 30
+    showspawnbeds: false
+    spawnbedlabel: "Spawn Beds"
+    spawnbedicon: "bed"
+    spawnbedhidebydefault: true
+    spawnbedminzoom: 0
+    spawnbedformat: "%name%'s bed"
+  - class: org.dynmap.ClientComponent
+    type: playermarkers
+    showplayerfaces: true
+    showplayerhealth: true
+    showplayerbody: true
+    smallplayerfaces: false
+    hidebydefault: false
+    layerprio: 0
+    label: "Players"
+
+deftemplatesuffix: lowres
+
+# maps:
+#  - class: org.dynmap.hdmap.HDMap
+#    name: surface
+#    title: "Surface"
+#    prefix: surface
+#    perspective: iso_S_90_vlowres
+#    shader: stdtexture
+#    lighting: default
+#    tilescale: 2
+
+#worlds:
+#  - name: world
+#    title: "World"
+#    enabled: true
+#    maps:
+#      - class: org.dynmap.flat.FlatMap
+#        name: flat
+#        title: "Flat"
+#        prefix: flat
+#        perspective: iso_S_90_vlowres
+
+render-triggers:
+  - blockupdate
+  - blockupdate-with-id
+  - lightingupdate
+
+# Higher update interval to reduce S3 writes (15 seconds * 1000 = 15000ms)
+update-rate: 15000
+
+saverestorepending: false
+tiles-rendered-at-once: 1
+renderinterval: 3
+fullrenderlocations: 3
+usenormalthreadpriority: true
+enabletilehash: true
+
+showplayerfaces: true
+showplayerhealth: true
+joinmessage: "%playername% joined"
+quitmessage: "%playername% quit"
+showlayercontrol: true
+# Match the JsonFileClientUpdateComponent writeinterval
+updaterate: 15000
